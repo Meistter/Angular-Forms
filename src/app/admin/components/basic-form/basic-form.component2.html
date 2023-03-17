@@ -1,0 +1,122 @@
+<form [formGroup]="form" (ngSubmit)="save($event)" >
+<p>
+  Nombre: {{nameField.value}}
+  <!-- asocio el formControl con nameField y muestro la variable en pantalla -->
+  <!-- con el class.is-valid le estamos indicando que va a agregar la clase is-valid solo cuando se cumpla la condicion ="xxx" -->
+  <input [class.is-valid]=" isNameFieldValid"
+   [class.is-invalid]=" isNameFieldInValid"
+   type="text" [formControl]="nameField"/>
+<!-- debo migrar angular a ver si se arregla -->
+  <button [disabled]="nameField.invalid" (click)="getNameValue()">Obtener el Valor</button>
+</p>
+<div class="messages" [class.active]="isNameFieldInValid">
+  <!-- si es invalido y ya ha sido tocado añade la clase active, para que puedan aparecer los mensajes, esto se hace en este div para agregarle al div un efecto -->
+<p>
+  <mat-error *ngIf="nameField.dirty && nameField.hasError('required')">Este Campo es requerido</mat-error>
+  <!-- Con esto mostramos basado en si tiene el error que definimos en el component, en este caso required -->
+  <!-- la condicion .dirty nos permite verificar si el campo ha sido tocado, de forma que al ingresar la primera vez y los campos estan vacios no se tome como un error, si no que luego de ser tocado empiece a mostrar errores al estar vacio -->
+</p>
+<p>
+  <mat-error *ngIf="nameField.dirty && nameField.hasError('maxlength')">No puede exceder 5 digitos</mat-error>
+  <!-- aqui maxlenght tiene que estar en minuscula, estamos limitando a 10 caracteres el campo, en caso de error muestra el mensaje -->
+</p>
+</div>
+<!-- Esto nos permite ver en mejor formato la salida  -->
+  <!-- <code>
+    <pre>
+      {{nameField | json}}
+    </pre>
+  </code> -->
+
+
+
+  {{emailField.value}}
+  <!-- con este type en dispositivos moviles tenemos ayuda al escribir emails -->
+  <input type="email" [formControl]="emailField"/>
+
+  <!-- //! Cuando usamos el formControl debemos colocar el formControlName de esta forma para asociarlo al controlForm -->
+  <!-- Asi es como luego podremos sumitear el formulario ya que trabajamos con un grupo de fields -->
+  <input type="email" formControlName="email"/>
+
+  {{phoneField.value}}
+  <!-- Este tipo de input permite en dispositivos moviles mostrar solo el teclado numerico -->
+  <input type="tel" [formControl]="phoneField"/>
+
+  {{colorField.value}}
+  <input type="color" [formControl]="colorField"/>
+
+  {{dateField.value}}
+  <input type="date" [formControl]="dateField"/>
+
+  {{ageField.value}}
+  <input type="number" [formControl]="ageField"/>
+
+  {{ageField2.value}}
+  <input type="range" [formControl]="ageField2"/>
+
+  <p>
+    Category: {{categoryField.value}}
+    <select [formControl]="categoryField">
+      <option value="category-1">Categoria 1</option>
+      <option value="category-2">Categoria 2</option>
+      <option value="category-3">Categoria 3</option>
+      <option value="category-4">Categoria 4</option>
+      <!-- El value nos permite saber que opcion fue seleccionada con el formControl desde el component.ts -->
+    </select>
+  </p>
+
+  <p>
+    Tag: {{tagField.value}}
+    <select [formControl]="tagField" multiple size="5">
+      <!-- el size sirve para definir cuantos elementos ver en el Tag al mismo tiempo -->
+      <!-- los valores seleccionados retornan separados por punto y coma ; -->
+      <option value="tag-1">Tag 1</option>
+      <option value="tag-2">Tag 2</option>
+      <option value="tag-3">Tag 3</option>
+      <option value="tag-4">Tag 4</option>
+      <option value="tag-5">Tag 5</option>
+      <option value="tag-6">Tag 6</option>
+      <!-- El value nos permite saber que opcion fue seleccionada con el formControl desde el component.ts -->
+    </select>
+  </p>
+
+  <p>
+    {{agreeField.value}}
+  <input type="checkbox" [formControl]="agreeField"/>
+  </p>
+  <p>
+    {{agreeField2.value}}
+  <input type="checkbox" [formControl]="agreeField2"/>
+  </p>
+
+
+<p>
+  {{genderField.value}}
+    <label for="">
+      Male
+      <input type="radio" value="male" [formControl]="genderField"/>
+    </label>
+    <label for="">
+      Female
+      <input type="radio" value="female" [formControl]="genderField"/>
+    </label>
+</p>
+<p>
+  {{zoneField.value}}
+    <label for="">
+      Zona 1
+      <!-- el name nos permite diferenciar un grupo de checkbox de otros, esto hace que estos esten agrupados bajo la etiqueta zona, mientras que los de genero estan en otra etiqueta por lo tanto son independientes los grupos -->
+      <input name="zona" type="radio" value="zona-1" [formControl]="zoneField"/>
+    </label>
+    <label for="">
+      Zona 2
+      <input name="zona" type="radio" value="zona-2" [formControl]="zoneField"/>
+    </label>
+    <label for="">
+      Zona 3
+      <input name="zona" type="radio" value="zona-3" [formControl]="zoneField"/>
+    </label>
+</p>
+
+<button type="submit">Sumitear</button>
+</form>

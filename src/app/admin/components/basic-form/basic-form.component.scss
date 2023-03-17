@@ -1,0 +1,17 @@
+input{
+  &.is-valid{
+    border: 20px green;
+  }
+  &.is-invalid{
+    border: 20px red;
+  }
+}
+.messages{
+  opacity: 0;
+  transition: all .5s ease-in;
+  &.active{ //usamos el & para indicar datos para cuando los elementos tengan la clase messages y active
+    opacity: 1;
+  }
+}
+// Es muy importante que en los estilos la clase .active esté pegada al andpersand (&).
+// Esto significa que se va a aplicar el estilo a los elementos que tengan tanto la clase .messages como .active, si dejamos un espacio entre active y el & significa que los estilos se aplicarán a los elementos que tengan la clase active y estén dentro de otro elemento con la clase messages.
