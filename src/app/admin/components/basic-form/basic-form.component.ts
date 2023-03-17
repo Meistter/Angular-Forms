@@ -51,7 +51,8 @@ private buildForm(){
   getNameValue(){
     // Con esto podremos obtener el valor del Input asociado a nameField
     // return this.form.get('name') //!Ya no podemos llamarlo asi porq ahora pertenece a un sub form
-    return this.form.get('fullName').get('name')
+   console.log(this.form.get('fullName').get('name'));
+
   }
 
   get isNameFieldValid(){
