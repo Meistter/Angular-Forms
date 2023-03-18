@@ -17,6 +17,12 @@
           <mat-form-field>
             <mat-label>Password</mat-label>
             <input placeholder="password" formControlName="password" matInput type="password">
+
+            <mat-error *ngIf="passwordField.touched && passwordField.hasError('required')">Este Campo es requerido</mat-error>3
+            <!-- debo averiguar como llamar al error minLength, no esta funcionando -->
+            <mat-error *ngIf="passwordField.touched && passwordField.hasError('minLength')">La contraseña debe tener minimo 6 caracteres</mat-error>
+            <mat-error *ngIf="passwordField.touched && passwordField.hasError('invalid_password')">La contraseña debe tener al menos 1 numero</mat-error>
+
           </mat-form-field>
         </div>
       </div>

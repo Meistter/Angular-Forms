@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from './../../../core/services/auth.service';
+import { MyValidators } from 'src/app/utils/validators';
 
 @Component({
   selector: 'app-register',
@@ -36,10 +37,18 @@ export class RegisterComponent implements OnInit {
   }
 
   private buildForm() {
+    //Estamos usando el modulo validators, para usar aqui nuestra validacion personalizada
     this.form = this.formBuilder.group({
       email: ['', [Validators.required]],
-      password: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6), MyValidators.validPassword]],
     });
+  }
+
+  get emailField(){
+    return this.form.get('email')
+  }
+  get passwordField(){
+    return this.form.get('password')
   }
 
 }
