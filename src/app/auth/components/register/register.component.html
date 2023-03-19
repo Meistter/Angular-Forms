@@ -9,6 +9,9 @@
           <mat-form-field>
             <mat-label>Email</mat-label>
             <input placeholder="email" formControlName="email" matInput type="email">
+            <mat-error *ngIf="emailField.touched && emailField.hasError('required')">Este Campo es requerido</mat-error>
+            <mat-error *ngIf="emailField.touched && emailField.hasError('email')">Email invalido</mat-error>
+
           </mat-form-field>
         </div>
       </div>
@@ -17,10 +20,10 @@
           <mat-form-field>
             <mat-label>Password</mat-label>
             <input placeholder="password" formControlName="password" matInput type="password">
-              <!-- hola hola hola -->
-            <mat-error *ngIf="passwordField.touched && passwordField.hasError('required')">Este Campo es requerido</mat-error>3
+
+            <mat-error *ngIf="passwordField.touched && passwordField.hasError('required')">Este Campo es requerido</mat-error>
             <!-- debo averiguar como llamar al error minLength, no esta funcionando -->
-            <!-- el error es llamado correctamente -->
+
             <mat-error *ngIf="passwordField.touched && passwordField.hasError('minLength')">La contraseña debe tener minimo 6 caracteres</mat-error>
             <mat-error *ngIf="passwordField.touched && passwordField.hasError('invalid_password')">La contraseña debe tener al menos 1 numero</mat-error>
 
@@ -31,7 +34,57 @@
         <div class="col-xs">
           <mat-form-field>
             <mat-label>Confirm Password</mat-label>
-            <input placeholder="password" formControlName="password" matInput type="password">
+            <input placeholder="password" formControlName="confirmPassword" matInput type="password">
+           <div *ngIf="form.get('confirmPassword').touched">
+            <mat-error *ngIf="form.hasError('match_password')">Las contraseñas deben coincidir</mat-error>
+          </div>
+          <!-- no se porque solo funciona dentro de un div -->
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs">
+          <mat-radio-group formControlName="type" aria-label="Select an option">
+           <mat-radio-button value="company">Company</mat-radio-button>
+           <mat-radio-button value="customer">Customer</mat-radio-button>
+          </mat-radio-group>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field>
+            <mat-label>Company Name</mat-label>
+            <input placeholder="company" formControlName="companyName" matInput type="text">
+          </mat-form-field>
+
+        </div>
+      </div>
+
+      <!-- Practica -->
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field>
+            <mat-label>Rango menor</mat-label>
+            <input placeholder="rango menor" formControlName="range1" matInput type="text">
+           <div *ngIf="range1Field.touched">
+            <mat-error *ngIf="form.hasError('range_right')">El rango debe estar entre 0-100</mat-error>
+          </div>
+           <!-- no se porque solo funciona dentro de un div -->
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
+          <mat-form-field>
+            <mat-label>Rango mayor</mat-label>
+            <input placeholder="rango mayor" formControlName="range2" matInput type="text">
+           <div *ngIf="range2Field.touched">
+            <mat-error *ngIf="form.hasError('range_right')">El rango debe estar entre 0-100 y en orden menor a mayor</mat-error>
+          </div>
+           <!-- no se porque solo funciona dentro de un div -->
           </mat-form-field>
         </div>
       </div>
