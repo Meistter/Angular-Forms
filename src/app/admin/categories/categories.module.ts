@@ -7,8 +7,8 @@ import { MaterialModule } from './../../material/material.module';
 import { CategoriesRoutingModule } from './categories-routing.module';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { CategoryFormComponent } from './components/category-form/category-form.component';
-
-
+import { AngularFireStorage } from '@angular/fire/storage';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 @NgModule({
   declarations: [CategoriesComponent, CategoryFormComponent],
   imports: [
@@ -16,6 +16,8 @@ import { CategoryFormComponent } from './components/category-form/category-form.
     ReactiveFormsModule,
     MaterialModule,
     CategoriesRoutingModule,
+    MatProgressBarModule
+    // AngularFireStorage
   ]
 })
 export class CategoriesModule { }

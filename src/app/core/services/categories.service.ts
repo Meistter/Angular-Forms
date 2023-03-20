@@ -14,6 +14,7 @@ export class CategoriesService {
   }
 
   createCategory(data: Partial<Category>){ //el partial nos permite en este caso que el id del modelo no sea obligatorio
+    console.log(data);
 
     return this.http.post<Category>(`${environment.url_api}/categories/`, data)
   }
