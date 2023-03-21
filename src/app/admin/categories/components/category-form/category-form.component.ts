@@ -4,6 +4,7 @@ import { CategoriesService} from '../../../../core/services/categories.service'
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators'; //nos avisa cuando finaliza la carga de la imagen y nos devuelve una URL final
+import { MyValidators } from 'src/app/utils/validators';
 @Component({
   selector: 'app-category-form',
   templateUrl: './category-form.component.html',
@@ -21,8 +22,9 @@ export class CategoryFormComponent implements OnInit {
 
   }
   private buildForm(){
-    this.form = this.formBuilder.group({
-      name: ['',Validators.required], //esto deberia llamarse igual al modelado de forma que podamos enviar los datos directos al servicio de creacion
+    this.form = this.formBuilder.group({  //le enviamos el servicio como parametro a la validacion personalizada
+      name: ['',Validators.required, MyValidators.validateCategory(this.categoriesService)], //esto deberia llamarse igual al modelado de forma que podamos enviar los datos directos al servicio de creacion
+      //la validacion de categoria no funciona en la nueva API
       image: ['',Validators.required]
     })
   }

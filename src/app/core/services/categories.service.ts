@@ -21,4 +21,7 @@ export class CategoriesService {
   updateCategory(id: string, data: Partial<Category>){
     return this.http.put<Category>(`${environment.url_api}/categories/${id}`, data)
   }
+  checkCategory(name:string){ //aqui comprobamos que el nombre de la categoria no este ocupado
+    return this.http.post(`${environment.url_api}/categories/availability`, {name})
+  }
 }

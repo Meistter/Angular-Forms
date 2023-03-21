@@ -2,6 +2,14 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 
+
+}
+.image{
+  margin-top: 12px;
+  display: flex;
+  // align-items: center;
+  justify-content: center;
+
 }
 .categoria{
   margin: 20px;
