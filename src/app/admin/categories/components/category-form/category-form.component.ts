@@ -15,7 +15,7 @@ export class CategoryFormComponent implements OnInit {
 
   form : FormGroup
   carga = null
-  categoryId = '0'
+  categoryId : string
   constructor(private formBuilder: FormBuilder, private categoriesService: CategoriesService, private router:Router, private storage: AngularFireStorage,
               private route: ActivatedRoute) {
               //con esto capturamos el id de la ruta
@@ -35,7 +35,8 @@ export class CategoryFormComponent implements OnInit {
   }
   private buildForm(){
     this.form = this.formBuilder.group({  //le enviamos el servicio como parametro a la validacion personalizada
-      name: ['',Validators.required, MyValidators.validateCategory(this.categoriesService)], //esto deberia llamarse igual al modelado de forma que podamos enviar los datos directos al servicio de creacion
+      name: ['',Validators.required, ], //esto deberia llamarse igual al modelado de forma que podamos enviar los datos directos al servicio de creacion
+      //Eliminamos la validacion de nombre porq la api no le funciona: MyValidators.validateCategory(this.categoriesService)
       //la validacion de categoria no funciona en la nueva API
       image: ['',Validators.required]
     })
@@ -48,8 +49,20 @@ export class CategoryFormComponent implements OnInit {
   }
 
   save(){
+    console.log('form validation');
+
     if(this.form.valid){
-      this.createCategory()
+
+      if(this.categoryId){
+      //   //aqui procesamos
+        this.updateCategory()
+        console.log('update');
+
+      }else{
+        this.createCategory()
+        console.log('create');
+
+      }
     }else{
       this.form.markAllAsTouched
     }
@@ -60,11 +73,17 @@ export class CategoryFormComponent implements OnInit {
     })
   }
 
+  private updateCategory(){
+
+    const data = this.form.value
+    this.categoriesService.updateCategory(this.categoryId, data).subscribe(resp =>{this.router.navigate(['./admin/categories'])})
+  }
+
   private createCategory(){
     console.log(this.imageField.value);
 
     const data = this.form.value
-    this.categoriesService.createCategory(data).subscribe(resp =>{console.log(resp),this.router.navigate(['./admin/categories'])})
+    this.categoriesService.createCategory(data).subscribe(resp =>{this.router.navigate(['./admin/categories'])})
   }
 //! Metodo para subida de archivos a firebase
 
