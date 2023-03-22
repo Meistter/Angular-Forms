@@ -12,6 +12,9 @@ export class CategoriesService {
   getAllCategories(){
     return this.http.get<Category[]>(`${environment.url_api}/categories/`)
   }
+  getCategory(id: string){
+    return this.http.get<Category[]>(`${environment.url_api}/categories/${id}`)
+  }
 
   createCategory(data: Partial<Category>){ //el partial nos permite en este caso que el id del modelo no sea obligatorio
     console.log(data);
