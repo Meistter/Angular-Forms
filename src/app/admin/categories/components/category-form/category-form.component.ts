@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators'; //nos avisa cuando finaliza la carga de la imagen y nos devuelve una URL final
 import { MyValidators } from 'src/app/utils/validators';
+import { ActivatedRoute, Params } from '@angular/router';
 @Component({
   selector: 'app-category-form',
   templateUrl: './category-form.component.html',
@@ -14,11 +15,22 @@ export class CategoryFormComponent implements OnInit {
 
   form : FormGroup
   carga = null
-  constructor(private formBuilder: FormBuilder, private categoriesService: CategoriesService, private router:Router, private storage: AngularFireStorage) {
+  categoryId = '0'
+  constructor(private formBuilder: FormBuilder, private categoriesService: CategoriesService, private router:Router, private storage: AngularFireStorage,
+              private route: ActivatedRoute) {
+              //con esto capturamos el id de la ruta
  this.buildForm()
   }
 
   ngOnInit(): void {
+  //! Estamos usando este formulario y componente para crear y editar, edita cuando recibimos un id por parametro y si no, entonces el formulario es para crear
+
+
+    this.route.params.subscribe((params: Params)=>{this.categoryId = params.id})
+    //al suscribirnos la variable categoryId siempre estara actualizada con el id ingresado
+    if(this.categoryId){
+      this.getCategoryId()
+    }
 
   }
   private buildForm(){
@@ -41,6 +53,11 @@ export class CategoryFormComponent implements OnInit {
     }else{
       this.form.markAllAsTouched
     }
+  }
+
+  private getCategoryId(){
+    this.categoriesService.getCategory(this.categoryId).subscribe(data=>{this.form.patchValue(data); //!esta funcion magica lo que hace es que llena el formulario con los valores respectivos siempre que los valores que le llegan se llamen igual que los del formulario, en este caso obviamente so iguales, entonces llenaremos el formualario de creacion/edicion
+    })
   }
 
   private createCategory(){
