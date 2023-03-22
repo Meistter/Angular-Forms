@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { CategoriesComponent } from './components/categories/categories.component';
 import { CategoryFormComponent } from './components/category-form/category-form.component';
-
+import { CategoryComponent } from './container/category/category.component';
 
 const routes: Routes = [
   {
