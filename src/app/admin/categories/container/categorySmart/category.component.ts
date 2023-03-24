@@ -14,7 +14,7 @@ import { CategoriesService } from 'src/app/core/services/categories.service';
 export class CategoryComponent implements OnInit {
 
 categoryId: string;
-category: any
+category
 
   constructor(private route: ActivatedRoute, private categoriesService: CategoriesService, private router:Router) { }
 
@@ -34,7 +34,7 @@ category: any
     }
 
     private getCategoryId(){
-      this.categoriesService.getCategory(this.categoryId).subscribe(data=>{ this.category = data //this.form.patchValue(data); //!esta funcion magica lo que hace es que llena el formulario con los valores respectivos siempre que los valores que le llegan se llamen igual que los del formulario, en este caso obviamente so iguales, entonces llenaremos el formualario de creacion/edicion
+      this.categoriesService.getCategory(this.categoryId).subscribe(data=>{this.category = data, console.log(this.category);
       })
     }
 

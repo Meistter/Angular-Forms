@@ -16,14 +16,30 @@ export class CategoryFormComponent {
 
   form : FormGroup
   carga = null
-
+  isForEdit: boolean = false
 
 //!Este componente fue refacturado lo que hicimos fue volverlo un dump component, que solo hara acciones sencillas de validacion, mientras que el categorySmart se encargara de procesar los datos
 //?Nos comunicamos con el smart component a traves de inputs y outputs
 //*Basicamente son padre e hijo
 //!el dump component interactua con datos solamente, y el smart component interactua con servicios y procesamientos
 
-@Input() category: Category
+
+//ahora category se convirtio en un metodo y no una variable
+// entonces crearemos una variable Flag/bandera, para hacer la funcion que hacia antes category
+@Input() set category(data: Category){ //el poner el input de esta forma podemos dentro de los corchetes hacer algo que se ejecutara en el momento en el que category sea recibido, al ser un dato que viene asincrono no podemos hacer esa accion fuera de aqui porq seria hacerlo sincrono y retornaria null
+  //en resumen aqui lo q hacemos es ejecutar algo para q se ejecute SOLO cuando category sea recibido en el momento que sea recibido
+//!lo que haremos es llenar el formulario, recordemos que si recibimos category significa que estamos editando, debemos cargar el formulario de datos
+
+if (data){
+  console.log(data);
+
+  this.isForEdit = true
+  this.form.patchValue(data); //!esta funcion magica lo que hace es que llena el formulario con los valores respectivos siempre que los valores que le llegan se llamen igual que los del formulario, en este caso obviamente so iguales, entonces llenaremos el formualario de creacion/edicion
+
+
+} //?Tarea ver porq no llegan aqui los datos de Category
+
+}
 @Output() create= new EventEmitter()
 @Output() update= new EventEmitter()
 
@@ -54,9 +70,10 @@ export class CategoryFormComponent {
 
     if(this.form.valid){
 
-      if(this.category){ //si recibio una categoria entonces actualiza, si no, si la variable category aun es null entonces crea
+      if(this.isForEdit){ //si recibio una categoria entonces actualiza, si no, si la variable category aun es null entonces crea
       //   //aqui procesamos
         this.update.emit(this.form.value) //le notificamos al smart component que debe actualizar
+
 
 
       }else{
