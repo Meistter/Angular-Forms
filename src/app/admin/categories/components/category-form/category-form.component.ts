@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl, Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { CategoriesService} from '../../../../core/services/categories.service'
 import { Router } from '@angular/router';
@@ -6,33 +6,35 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators'; //nos avisa cuando finaliza la carga de la imagen y nos devuelve una URL final
 import { MyValidators } from 'src/app/utils/validators';
 import { ActivatedRoute, Params } from '@angular/router';
+import { Category } from 'src/app/core/models/category.module';
 @Component({
   selector: 'app-category-form',
   templateUrl: './category-form.component.html',
   styleUrls: ['./category-form.component.scss']
 })
-export class CategoryFormComponent implements OnInit {
+export class CategoryFormComponent {
 
   form : FormGroup
   carga = null
-  categoryId : string
-  constructor(private formBuilder: FormBuilder, private categoriesService: CategoriesService, private router:Router, private storage: AngularFireStorage,
-              private route: ActivatedRoute) {
+
+
+//!Este componente fue refacturado lo que hicimos fue volverlo un dump component, que solo hara acciones sencillas de validacion, mientras que el categorySmart se encargara de procesar los datos
+//?Nos comunicamos con el smart component a traves de inputs y outputs
+//*Basicamente son padre e hijo
+//!el dump component interactua con datos solamente, y el smart component interactua con servicios y procesamientos
+
+@Input() category: Category
+@Output() create= new EventEmitter()
+@Output() update= new EventEmitter()
+
+
+  constructor(private formBuilder: FormBuilder, private storage: AngularFireStorage
+              ) {
               //con esto capturamos el id de la ruta
  this.buildForm()
   }
 
-  ngOnInit(): void {
-  //! Estamos usando este formulario y componente para crear y editar, edita cuando recibimos un id por parametro y si no, entonces el formulario es para crear
 
-
-    this.route.params.subscribe((params: Params)=>{this.categoryId = params.id})
-    //al suscribirnos la variable categoryId siempre estara actualizada con el id ingresado
-    if(this.categoryId){
-      this.getCategoryId()
-    }
-
-  }
   private buildForm(){
     this.form = this.formBuilder.group({  //le enviamos el servicio como parametro a la validacion personalizada
       name: ['',Validators.required, ], //esto deberia llamarse igual al modelado de forma que podamos enviar los datos directos al servicio de creacion
@@ -49,18 +51,17 @@ export class CategoryFormComponent implements OnInit {
   }
 
   save(){
-    console.log('form validation');
 
     if(this.form.valid){
 
-      if(this.categoryId){
+      if(this.category){ //si recibio una categoria entonces actualiza, si no, si la variable category aun es null entonces crea
       //   //aqui procesamos
-        this.updateCategory()
-        console.log('update');
+        this.update.emit(this.form.value) //le notificamos al smart component que debe actualizar
+
 
       }else{
-        this.createCategory()
-        console.log('create');
+        this.create.emit(this.form.value)
+
 
       }
     }else{
@@ -68,23 +69,7 @@ export class CategoryFormComponent implements OnInit {
     }
   }
 
-  private getCategoryId(){
-    this.categoriesService.getCategory(this.categoryId).subscribe(data=>{this.form.patchValue(data); //!esta funcion magica lo que hace es que llena el formulario con los valores respectivos siempre que los valores que le llegan se llamen igual que los del formulario, en este caso obviamente so iguales, entonces llenaremos el formualario de creacion/edicion
-    })
-  }
 
-  private updateCategory(){
-
-    const data = this.form.value
-    this.categoriesService.updateCategory(this.categoryId, data).subscribe(resp =>{this.router.navigate(['./admin/categories'])})
-  }
-
-  private createCategory(){
-    console.log(this.imageField.value);
-
-    const data = this.form.value
-    this.categoriesService.createCategory(data).subscribe(resp =>{this.router.navigate(['./admin/categories'])})
-  }
 //! Metodo para subida de archivos a firebase
 
   uploadFile(event){
