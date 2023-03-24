@@ -10,7 +10,7 @@ import { ProductsService } from './../../../../core/services/products/products.s
 export class ProductsComponent implements OnInit {
 
   products = [];
-  displayedColumns: string[] = ['id', 'name', 'price', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'price','images', 'actions'];
 
   constructor(
     private productsService: ProductsService
@@ -23,6 +23,8 @@ export class ProductsComponent implements OnInit {
   fetchProducts() {
     this.productsService.getAllProducts()
     .subscribe(products => {
+      console.log('productos',products);
+
       this.products = products;
     });
   }
