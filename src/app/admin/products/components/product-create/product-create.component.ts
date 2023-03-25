@@ -44,6 +44,25 @@ export class ProductCreateComponent implements OnInit {
     }
   }
 
+
+  private buildForm() {
+    this.form = this.formBuilder.group({
+      categoryId: ['', [Validators.required]],
+      title: ['', [Validators.required]],
+      price: ['', [Validators.required, MyValidators.isPriceValid]],
+      images: ['',[Validators.required]],
+      description: ['', [Validators.required]],
+    });
+  }
+
+  get priceField() {
+    return this.form.get('price');
+  }
+  get imagesField(){
+    return this.form.get('images')
+  }
+
+
   uploadFile(event) {
     const file = event.target.files[0];
     const name = 'image.png';
@@ -55,26 +74,13 @@ export class ProductCreateComponent implements OnInit {
       finalize(() => {
         this.image$ = fileRef.getDownloadURL();
         this.image$.subscribe(url => {
+        const fileList = this.imagesField.value as string[] //!Esto es porque la api nos pide que la imagen llegue en un array
+          this.imagesField.setValue([...fileList, url ])
           console.log(url);
-          this.form.get('image').setValue(url);
+         // this.form.get('images').setValue(url);
         });
       })
     )
     .subscribe();
   }
-
-  private buildForm() {
-    this.form = this.formBuilder.group({
-      id: ['', [Validators.required]],
-      title: ['', [Validators.required]],
-      price: ['', [Validators.required, MyValidators.isPriceValid]],
-      image: [''],
-      description: ['', [Validators.required]],
-    });
-  }
-
-  get priceField() {
-    return this.form.get('price');
-  }
-
 }
