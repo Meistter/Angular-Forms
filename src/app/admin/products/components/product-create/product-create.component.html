@@ -7,7 +7,13 @@
       <div class="row">
         <div class="col-xs">
           <mat-form-field>
-            <input placeholder="Category Id" formControlName="categoryId" matInput type="text">
+            <!-- <input placeholder="Category" formControlName="categoryId" matInput type="text"> -->
+            <mat-label>Categories</mat-label>
+            <mat-select formControlName="categoryId">
+              <!-- le estamos indicando que nos muestre el nombre pero el valor que asigna por detras al campo es el id, ya que es el q necesitamos para guardar en la api -->
+              <mat-option [value]="category.id" *ngFor="let category of categories">{{category.name}}</mat-option>
+              <!--? Super util!!! -->
+            </mat-select>
           </mat-form-field>
         </div>
       </div>

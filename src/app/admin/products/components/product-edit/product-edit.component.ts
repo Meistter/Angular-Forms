@@ -4,6 +4,8 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 
 import { MyValidators } from './../../../../utils/validators';
 import { ProductsService } from './../../../../core/services/products/products.service';
+import { CategoriesService } from 'src/app/core/services/categories.service';
+import { Category } from 'src/app/core/models/category.module';
 
 @Component({
   selector: 'app-product-edit',
@@ -14,12 +16,14 @@ export class ProductEditComponent implements OnInit {
 
   form: FormGroup;
   id: string;
-
+  categories: Category[]
+  categoryDefault
   constructor(
     private formBuilder: FormBuilder,
     private productsService: ProductsService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private categoriesServices : CategoriesService
   ) {
     this.buildForm();
   }
@@ -30,8 +34,12 @@ export class ProductEditComponent implements OnInit {
       this.productsService.getProduct(this.id)
       .subscribe(product => {
         this.form.patchValue(product);
+
+        console.log(product);
+
       });
     });
+    this.getCategories()
   }
 
   saveProduct(event: Event) {
@@ -48,10 +56,10 @@ export class ProductEditComponent implements OnInit {
 
   private buildForm() {
     this.form = this.formBuilder.group({
-      id: ['', [Validators.required]],
+      categoryId: ['', [Validators.required]],
       title: ['', [Validators.required]],
       price: ['', [Validators.required, MyValidators.isPriceValid]],
-      image: [''],
+      // images: [''],
       description: ['', [Validators.required]],
     });
   }
@@ -60,4 +68,13 @@ export class ProductEditComponent implements OnInit {
     return this.form.get('price');
   }
 
+  get categoryIdField(){
+    return this.form.get('categoryId');
+  }
+
+  // No estamos cargando la categoria cuando se entra a editar porque la api cambio y no se como hacerlo
+  private getCategories(){
+    this.categoriesServices.getAllCategories()
+    .subscribe((data)=>{this.categories = data})
+  }
 }
