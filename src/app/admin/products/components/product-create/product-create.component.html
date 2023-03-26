@@ -44,6 +44,13 @@
       </div>
       <div class="row">
         <div class="col-xs">
+          <!-- Al hacer este formControlName lo q logramos es asignarle al valor que retorna en el stepper al formulario stock -->
+          <!-- para esto hay que implementar el ControlValueAccessor en el componente  -->
+          <app-stepper  formControlName="stock"></app-stepper>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs">
           <img *ngIf="(image$ | async) as image" [src]="image" alt="">
           <input type="file" (change)="uploadFile($event)">
         </div>

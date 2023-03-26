@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AngularFireStorage } from '@angular/fire/storage';
@@ -17,6 +17,7 @@ import { Category } from 'src/app/core/models/category.module';
   styleUrls: ['./product-create.component.scss']
 })
 export class ProductCreateComponent implements OnInit {
+
 
   form: FormGroup;
   image$: Observable<any>;
@@ -55,8 +56,13 @@ export class ProductCreateComponent implements OnInit {
       price: ['', [Validators.required, MyValidators.isPriceValid]],
       images: ['',[Validators.required]],
       description: ['', [Validators.required]],
+      stock: [, Validators.required]
     });
+    this.form.get('stock').valueChanges.subscribe(value=>{console.log(value)})
+    //!Con esto obtenemos los datos desde el otro modulo para aqui en este caso mostrarlos por consola
   }
+
+
 
   get priceField() {
     return this.form.get('price');
