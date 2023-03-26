@@ -17,7 +17,15 @@ export class ProductEditComponent implements OnInit {
   form: FormGroup;
   id: string;
   categories: Category[]
-  categoryDefault
+  // categoryDefault
+  states = [
+  {name: 'Arizona', abbrev: 'AZ'},
+  {name: 'California', abbrev: 'CA'},
+  {name: 'Colorado', abbrev: 'CO'},
+  {name: 'New York', abbrev: 'NY'},
+  {name: 'Pennsylvania', abbrev: 'PA'}
+  ]
+
   constructor(
     private formBuilder: FormBuilder,
     private productsService: ProductsService,
@@ -33,9 +41,11 @@ export class ProductEditComponent implements OnInit {
       this.id = params.id;
       this.productsService.getProduct(this.id)
       .subscribe(product => {
-        this.form.patchValue(product);
+        this.form.patchValue({
+          ...product, //categoryId: this.categories[2].id
+        });           //tengo que hayar la forma de enviarle el ID de la categoria q me llega de la api
 
-        console.log(product);
+        console.log(this.categories[1].id);
 
       });
     });
@@ -61,6 +71,7 @@ export class ProductEditComponent implements OnInit {
       price: ['', [Validators.required, MyValidators.isPriceValid]],
       // images: [''],
       description: ['', [Validators.required]],
+      states: ['']
     });
   }
 

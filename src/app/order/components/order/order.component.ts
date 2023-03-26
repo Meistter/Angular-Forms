@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 
 import { Observable } from 'rxjs';
 
@@ -12,15 +13,42 @@ import { CartService } from './../../../core/services/cart.service';
 })
 export class OrderComponent implements OnInit {
 
-  products$: Observable<Product[]>;
-
+  products$: Observable<Product[]>; //uso de observable para recibir del carrito
+  form: FormGroup
   constructor(
-    private cartService: CartService
+    private cartService: CartService,
+    private formBuilder: FormBuilder
   ) {
     this.products$ = this.cartService.cart$;
+    this.buildForm()
   }
 
   ngOnInit() {
   }
+  private buildForm(){
+    this.form = this.formBuilder.group({
+      name: ['', Validators.required],
+      address: this.formBuilder.array([]) //le indicamos que es un array ya q seran varios campos de direcciones
+    })
+  }
 
+  addAddressField(){
+    //!Este metodo se encargara de agregar un nuevo campo de direccion
+    this.addressField.push(this.createAddressField()) //lo que pushearemos es el retorno de el metodo createAddressField
+  }
+
+  private createAddressField(){
+    return this.formBuilder.group({
+      zip: ['', Validators.required], //Estos dos campos representan los 2 campos desplegados para 1 direccion, esto se generara tantas veces el usuario quiera agregar otra direccion
+      text: ['', Validators.required]
+    })
+  }
+
+  get addressField(){
+    return this.form.get('address') as FormArray //le indicamos que lo que retorna es un formArray
+  }
+  save(){
+    console.log(this.form.value);
+
+  }
 }
