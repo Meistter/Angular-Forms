@@ -8,3 +8,6 @@
 <p>
   {{searchField.value}}
 </p>
+<div class="" *ngFor="let result of results">
+    <img [src]="result.url" [width]="result.width" >
+</div>
