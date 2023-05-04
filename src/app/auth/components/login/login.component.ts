@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(event: Event) {
-    event.preventDefault();
+    event.preventDefault(); //previene la recarga
     if (this.form.valid) {
       const value = this.form.value;
       this.authService.login(value.email, value.password)
