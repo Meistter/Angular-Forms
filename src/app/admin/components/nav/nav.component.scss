@@ -4,11 +4,11 @@
 
 .sidenav {
   width: 200px;
+  .mat-toolbar {
+    background: inherit;
+  }
 }
 
-.sidenav .mat-toolbar {
-  background: inherit;
-}
 
 .mat-toolbar.mat-primary {
   position: sticky;
