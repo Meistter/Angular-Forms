@@ -12,7 +12,7 @@
             <mat-error *ngIf="nameField.touched && nameField.hasError('required')">Este Campo es requerido</mat-error>
             <mat-error *ngIf="nameField.touched && nameField.hasError('pattern')">Este campo no debe contener caracteres especiales </mat-error>
             <mat-error *ngIf="nameField.touched && nameField.hasError('maxlength')">No puede exceder 5 digitos</mat-error>
-
+<!-- comment -->
           </mat-form-field>
       <button type="button" [disabled]="isNameFieldInValid" (click)="getNameValue()" mat-raised-button matTooltip="Esto acepta la vaina" aria-label="Esto acepta bien bien la vainita">
         Obtener
